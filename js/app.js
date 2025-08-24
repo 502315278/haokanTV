@@ -1,5 +1,5 @@
 // 全局变量
-let selectedAPIs = JSON.parse(localStorage.getItem('selectedAPIs') || '["tyyszy","dyttzy", "bfzy", "ruyi"]'); // 默认选中资源
+let selectedAPIs = JSON.parse(localStorage.getItem('selectedAPIs') || '["hk"]'); // 默认选中资源
 let customAPIs = JSON.parse(localStorage.getItem('customAPIs') || '[]'); // 存储自定义API列表
 
 // 添加当前播放的集数索引
@@ -14,13 +14,13 @@ let episodesReversed = false;
 // 页面初始化
 document.addEventListener('DOMContentLoaded', function () {
     // 初始化API复选框
-    initAPICheckboxes();
+    // initAPICheckboxes();
 
     // 初始化自定义API列表
-    renderCustomAPIsList();
+    // renderCustomAPIsList();
 
     // 初始化显示选中的API数量
-    updateSelectedApiCount();
+    // updateSelectedApiCount();
 
     // 渲染搜索历史
     renderSearchHistory();
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 设置默认API选择（如果是第一次加载）
     if (!localStorage.getItem('hasInitializedDefaults')) {
         // 默认选中资源
-        selectedAPIs = ["tyyszy", "bfzy", "dyttzy", "ruyi"];
+        selectedAPIs = ["hk"];
         localStorage.setItem('selectedAPIs', JSON.stringify(selectedAPIs));
 
         // 默认选中过滤开关
@@ -642,7 +642,7 @@ async function search() {
 
         // 从所有选中的API源搜索
         let allResults = [];
-        const searchPromises = selectedAPIs.map(apiId => 
+        const searchPromises = selectedAPIs.map(apiId =>
             searchByAPIAndKeyWord(apiId, query)
         );
 
@@ -661,7 +661,7 @@ async function search() {
             // 首先按照视频名称排序
             const nameCompare = (a.vod_name || '').localeCompare(b.vod_name || '');
             if (nameCompare !== 0) return nameCompare;
-            
+
             // 如果名称相同，则按照来源排序
             return (a.source_name || '').localeCompare(b.source_name || '');
         });
@@ -960,9 +960,6 @@ async function showDetails(id, vod_name, sourceCode) {
                         </button>
                         <span class="text-gray-400 text-sm">共 ${data.episodes.length} 集</span>
                     </div>
-                    <button onclick="copyLinks()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm transition-colors">
-                        复制链接
-                    </button>
                 </div>
                 <div id="episodesGrid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
                     ${renderEpisodes(vod_name, sourceCode, id)}
